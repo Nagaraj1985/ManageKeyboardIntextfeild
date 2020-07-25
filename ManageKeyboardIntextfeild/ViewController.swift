@@ -16,12 +16,14 @@ class ViewController: UIViewController , UITextFieldDelegate{
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeyBoardVisible(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         // Do any additional setup after loading the view.
     }
     
     @objc func KeyBoardVisible(notification: Notification) {
         if let userInfo = notification.userInfo as? Dictionary<String,AnyObject> {
-            let keyBoardFrame = userInfo[UIResponder.keyboardFrameBeginUserInfoKey]
+            let keyBoardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey]
             let keyBoarsRect = keyBoardFrame?.cgRectValue
             if let keyBoardHieght = keyBoarsRect?.height{
                 self.textConstraint.constant = keyBoardHieght
@@ -29,10 +31,14 @@ class ViewController: UIViewController , UITextFieldDelegate{
         }
     }
     
-    override func resignFirstResponder() -> Bool {
+    @objc func keyBoardHide(notification: NSNotification) {
+        self.textConstraint.constant = 50.0
+    }
+  
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
-
 
 }
 
