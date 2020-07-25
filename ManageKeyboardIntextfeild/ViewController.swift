@@ -27,12 +27,19 @@ class ViewController: UIViewController , UITextFieldDelegate{
             let keyBoarsRect = keyBoardFrame?.cgRectValue
             if let keyBoardHieght = keyBoarsRect?.height{
                 self.textConstraint.constant = keyBoardHieght
+                UIView.animate(withDuration: 1.0, animations: {
+                    self.view.layoutIfNeeded()
+                })
+                
             }
         }
     }
     
     @objc func keyBoardHide(notification: NSNotification) {
         self.textConstraint.constant = 50.0
+        UIView.animate(withDuration: 3.0, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
   
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
